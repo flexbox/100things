@@ -6,7 +6,6 @@ mutation {
       keyword: "swag"
       upvote: 1
       link: null
-      author: null
     }
   ) {
     id
@@ -15,16 +14,14 @@ mutation {
     keyword
     upvote
     link
-    author
   }
-  secondUser: createProduct(
+  secondProduct: createProduct(
     data: {
       name: "MacBook Pro"
       description: "For working"
       keyword: "tech"
       upvote: 1
       link: null
-      author: null
     }
   ) {
     id
@@ -33,6 +30,5 @@ mutation {
     keyword
     upvote
     link
-    author
   }
 }
