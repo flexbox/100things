@@ -15,5 +15,5 @@ type Product {
 }
 
 type Mutation {
-  upVote(id: ID!): Product
+  upVote(id: ID!, vote: Int!): Product
 }

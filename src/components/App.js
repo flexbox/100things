@@ -5,12 +5,12 @@ import ProductList from './ProductList';
 
 const App = () => (
   <Query query={GET_PRODUCTS}>
-    {({ data: { products }, loading }) => {
+    {({ data: { products }, loading, refetch }) => {
       if (loading) {
-        return <div>Loading...</div>;
+        return <div>⏳ Loading...</div>;
       }
 
-      return <ProductList products={products} />;
+      return <ProductList products={products} refetch={refetch} />;
     }}
   </Query>
 );
