@@ -1,13 +1,20 @@
 import React from 'react';
+import ProductItem from './ProductItem';
 
-const productList = ({ products }) => {
+const ProductList = ({ products }) => {
   return (
     <ul>
       {products.map((product, index) => (
-        <li key={index}>{product.name}</li>
+        <ProductItem
+          key={index}
+          id={product.id}
+          name={product.name}
+          description={product.description}
+          upvote={product.upvote}
+        />
       ))}
     </ul>
   );
 };
 
-export default productList;
+export default ProductList;

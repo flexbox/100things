@@ -1,9 +1,6 @@
 import React from 'react';
-
 import { Query } from 'react-apollo';
-
 import { GET_REPOSITORIES_OF_ORGANIZATION } from './Products/products';
-
 import ProductList from './ProductList';
 
 const App = () => (
