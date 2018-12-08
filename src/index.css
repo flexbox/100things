@@ -1,3 +1,7 @@
+.loading {
+  height: 100vh;
+}
+
 /*! modern-normalize | MIT License | https://github.com/sindresorhus/modern-normalize */
 
 /* Document
@@ -45,6 +49,7 @@ html {
 
 body {
   margin: 0;
+  background-color: #f8fafa;
 }
 
 /**

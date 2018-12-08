@@ -1,9 +1,13 @@
 import React from 'react';
 import ProductItem from './ProductItem';
+import { Box, Heading, Text, Flex, Button } from 'rebass';
 
 const ProductList = ({ products, refetch }) => {
   return (
-    <ul>
+    <div>
+      <Flex justifyContent="center" p={2}>
+        <Heading>🎒 My 100 Things </Heading>
+      </Flex>
       {products.map((product, index) => (
         <ProductItem
           refetch={refetch}
@@ -14,7 +18,7 @@ const ProductList = ({ products, refetch }) => {
           upvote={product.upvote}
         />
       ))}
-    </ul>
+    </div>
   );
 };
 
