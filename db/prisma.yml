@@ -1,0 +1,13 @@
+endpoint: https://eu1.prisma.sh/flexbox/minimalist/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: javascript-client
+    output: ./generated/prisma-client/
+
+seed:
+  import: seed.graphql
+
+hooks:
+  post-deploy:
+    - prisma generate

@@ -1,0 +1,15 @@
+type User {
+  id: ID! @unique
+  email: String @unique
+  username: String!
+}
+
+type Product {
+  id: ID! @unique
+  name: String!
+  description: String!
+  keyword: String!
+  upvote: Int!
+  link: String
+  author: User
+}

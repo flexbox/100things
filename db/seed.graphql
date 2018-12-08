@@ -1,0 +1,38 @@
+mutation {
+  firstProduct: createProduct(
+    data: {
+      name: "Sunglasses"
+      description: "Because"
+      keyword: "swag"
+      upvote: 1
+      link: null
+      author: null
+    }
+  ) {
+    id
+    name
+    description
+    keyword
+    upvote
+    link
+    author
+  }
+  secondUser: createProduct(
+    data: {
+      name: "MacBook Pro"
+      description: "For working"
+      keyword: "tech"
+      upvote: 1
+      link: null
+      author: null
+    }
+  ) {
+    id
+    name
+    description
+    keyword
+    upvote
+    link
+    author
+  }
+}
