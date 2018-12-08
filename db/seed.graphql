@@ -1,10 +1,11 @@
 mutation {
-  firstProduct: createProduct(
+  oneProduct: createProduct(
     data: {
       name: "Sunglasses"
-      description: "Because"
+      description: "Usually, sunglasses protect your eyes by making the world look dull. We’ve created a custom lens tint with rich, warm tones that's like a real life Insta filter."
       keyword: "swag"
       upvote: 1
+      link: "https://tens.co/collections/sunglasses"
     }
   ) {
     id
@@ -12,11 +13,12 @@ mutation {
     description
     keyword
     upvote
+    link
   }
-  secondProduct: createProduct(
+  twoProduct: createProduct(
     data: {
       name: "MacBook Pro"
-      description: "For working"
+      description: "The MacBook Pro (sometimes abbreviated as MBP)[1] is a line of Macintosh portable computers introduced in January 2006 by Apple Inc. It is the high-end model of the MacBook family and is currently available in 13- and 15-inch screen sizes. A 17-inch version was available between April 2006 and June 2012."
       keyword: "tech"
       upvote: 1
     }
@@ -26,5 +28,35 @@ mutation {
     description
     keyword
     upvote
+  }
+  threeProduct: createProduct(
+    data: {
+      name: "iPhone"
+      description: "iPhone (/ˈaɪfoʊn/ EYE-fone) is a line of smartphones designed and marketed by Apple Inc. All generations of the iPhone use Apple's iOS mobile operating system software. The first-generation iPhone was released on June 29, 2007, and multiple new hardware iterations with new iOS releases have been released since."
+      keyword: "tech"
+      upvote: 1
+    }
+  ) {
+    id
+    name
+    description
+    keyword
+    upvote
+  }
+  fourProduct: createProduct(
+    data: {
+      name: "Roost Laptop Stand"
+      description: "Stop hunching over your laptop. The Roost is an ultra-portable, lightweight laptop stand that transforms your laptop into an ergonomic desktop workstation."
+      keyword: "tech"
+      upvote: 1
+      link: "https://www.therooststand.com/"
+    }
+  ) {
+    id
+    name
+    description
+    keyword
+    upvote
+    link
   }
 }

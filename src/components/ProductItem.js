@@ -19,7 +19,7 @@ const ProductItem = product => {
         {(upvoteProduct, { data }) => (
           <Flex flexDirection="row" alignItems="center" p={3} bg="white" m={5}>
             <Box p={3}>
-              <Heading fontSize={[4, 6]} color="#E354C2">
+              <Heading fontSize={[4, 6]} color="#E354C2" textAlign="center">
                 {product.upvote}
               </Heading>
               <form
@@ -29,15 +29,31 @@ const ProductItem = product => {
                     variables: { id: product.id, vote: product.upvote + 1 }
                   });
                   product.refetch();
-                  console.log(product.id);
-                  console.log(product.upvote);
                 }}
               >
                 <Button type="submit" bg="#D7DDDE" color="#111111">
                   <span role="img" aria-label="upvote">
                     👍
                   </span>{' '}
+                  <br />
                   Upvote
+                </Button>
+              </form>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  upvoteProduct({
+                    variables: { id: product.id, vote: product.upvote - 1 }
+                  });
+                  product.refetch();
+                }}
+              >
+                <Button type="submit" bg="#D7DDDE" color="#111111">
+                  <span role="img" aria-label="upvote">
+                    👎
+                  </span>{' '}
+                  <br />
+                  Downvote
                 </Button>
               </form>
             </Box>
