@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const GET_PRODUCTS = gql`
   {
-    products {
+    products(orderBy: upvote_DESC) {
       id
       name
       description
