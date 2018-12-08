@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const GET_REPOSITORIES_OF_ORGANIZATION = gql`
+export const GET_PRODUCTS = gql`
   {
     products {
       id

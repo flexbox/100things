@@ -13,3 +13,7 @@ type Product {
   link: String
   author: User
 }
+
+type Mutation {
+  upVote(id: ID!): Product
+}

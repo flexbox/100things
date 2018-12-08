@@ -1,10 +1,10 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import { GET_REPOSITORIES_OF_ORGANIZATION } from './Products/products';
+import { GET_PRODUCTS } from './Products/products';
 import ProductList from './ProductList';
 
 const App = () => (
-  <Query query={GET_REPOSITORIES_OF_ORGANIZATION}>
+  <Query query={GET_PRODUCTS}>
     {({ data: { products }, loading }) => {
       if (loading) {
         return <div>Loading...</div>;

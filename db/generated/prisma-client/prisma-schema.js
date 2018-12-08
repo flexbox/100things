@@ -1,5 +1,9 @@
 module.exports = {
-        typeDefs: /* GraphQL */ `type AggregateProduct {
+        typeDefs: /* GraphQL */ `type AggregateMutation {
+  count: Int!
+}
+
+type AggregateProduct {
   count: Int!
 }
 
@@ -7,31 +11,58 @@ type AggregateUser {
   count: Int!
 }
 
-type BatchPayload {
-  count: Long!
+type Mutation {
+  upVote: Product
 }
 
-scalar Long
+type MutationConnection {
+  pageInfo: PageInfo!
+  edges: [MutationEdge]!
+  aggregate: AggregateMutation!
+}
 
-type Mutation {
-  createProduct(data: ProductCreateInput!): Product!
-  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
-  updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
-  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
-  deleteProduct(where: ProductWhereUniqueInput!): Product
-  deleteManyProducts(where: ProductWhereInput): BatchPayload!
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+type MutationEdge {
+  node: Mutation!
+  cursor: String!
+}
+
+enum MutationOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type MutationSubscriptionPayload {
+  mutation: MutationType!
+  node: Mutation
+  updatedFields: [String!]
+}
+
+input MutationSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MutationWhereInput
+  AND: [MutationSubscriptionWhereInput!]
+  OR: [MutationSubscriptionWhereInput!]
+  NOT: [MutationSubscriptionWhereInput!]
 }
 
 enum MutationType {
   CREATED
   UPDATED
   DELETED
+}
+
+input MutationWhereInput {
+  upVote: ProductWhereInput
+  AND: [MutationWhereInput!]
+  OR: [MutationWhereInput!]
+  NOT: [MutationWhereInput!]
 }
 
 interface Node {
@@ -59,15 +90,6 @@ type ProductConnection {
   pageInfo: PageInfo!
   edges: [ProductEdge]!
   aggregate: AggregateProduct!
-}
-
-input ProductCreateInput {
-  name: String!
-  description: String!
-  keyword: String!
-  upvote: Int!
-  link: String
-  author: UserCreateOneInput
 }
 
 type ProductEdge {
@@ -119,23 +141,6 @@ input ProductSubscriptionWhereInput {
   AND: [ProductSubscriptionWhereInput!]
   OR: [ProductSubscriptionWhereInput!]
   NOT: [ProductSubscriptionWhereInput!]
-}
-
-input ProductUpdateInput {
-  name: String
-  description: String
-  keyword: String
-  upvote: Int
-  link: String
-  author: UserUpdateOneInput
-}
-
-input ProductUpdateManyMutationInput {
-  name: String
-  description: String
-  keyword: String
-  upvote: Int
-  link: String
 }
 
 input ProductWhereInput {
@@ -228,6 +233,8 @@ input ProductWhereUniqueInput {
 }
 
 type Query {
+  mutations(where: MutationWhereInput, orderBy: MutationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Mutation]!
+  mutationsConnection(where: MutationWhereInput, orderBy: MutationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MutationConnection!
   product(where: ProductWhereUniqueInput!): Product
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
@@ -238,6 +245,7 @@ type Query {
 }
 
 type Subscription {
+  mutation(where: MutationSubscriptionWhereInput): MutationSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -252,16 +260,6 @@ type UserConnection {
   pageInfo: PageInfo!
   edges: [UserEdge]!
   aggregate: AggregateUser!
-}
-
-input UserCreateInput {
-  email: String
-  username: String!
-}
-
-input UserCreateOneInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
 }
 
 type UserEdge {
@@ -304,35 +302,6 @@ input UserSubscriptionWhereInput {
   AND: [UserSubscriptionWhereInput!]
   OR: [UserSubscriptionWhereInput!]
   NOT: [UserSubscriptionWhereInput!]
-}
-
-input UserUpdateDataInput {
-  email: String
-  username: String
-}
-
-input UserUpdateInput {
-  email: String
-  username: String
-}
-
-input UserUpdateManyMutationInput {
-  email: String
-  username: String
-}
-
-input UserUpdateOneInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: UserWhereUniqueInput
-}
-
-input UserUpsertNestedInput {
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
 }
 
 input UserWhereInput {

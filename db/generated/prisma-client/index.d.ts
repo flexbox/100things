@@ -10,6 +10,7 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  mutation: (where?: MutationWhereInput) => Promise<boolean>;
   product: (where?: ProductWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -33,6 +34,28 @@ export interface Prisma {
    * Queries
    */
 
+  mutations: (
+    args?: {
+      where?: MutationWhereInput;
+      orderBy?: MutationOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Mutation>;
+  mutationsConnection: (
+    args?: {
+      where?: MutationWhereInput;
+      orderBy?: MutationOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => MutationConnectionPromise;
   product: (where: ProductWhereUniqueInput) => ProductPromise;
   products: (
     args?: {
@@ -85,38 +108,7 @@ export interface Prisma {
    * Mutations
    */
 
-  createProduct: (data: ProductCreateInput) => ProductPromise;
-  updateProduct: (
-    args: { data: ProductUpdateInput; where: ProductWhereUniqueInput }
-  ) => ProductPromise;
-  updateManyProducts: (
-    args: { data: ProductUpdateManyMutationInput; where?: ProductWhereInput }
-  ) => BatchPayloadPromise;
-  upsertProduct: (
-    args: {
-      where: ProductWhereUniqueInput;
-      create: ProductCreateInput;
-      update: ProductUpdateInput;
-    }
-  ) => ProductPromise;
-  deleteProduct: (where: ProductWhereUniqueInput) => ProductPromise;
-  deleteManyProducts: (where?: ProductWhereInput) => BatchPayloadPromise;
-  createUser: (data: UserCreateInput) => UserPromise;
-  updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
-  ) => UserPromise;
-  updateManyUsers: (
-    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput }
-  ) => BatchPayloadPromise;
-  upsertUser: (
-    args: {
-      where: UserWhereUniqueInput;
-      create: UserCreateInput;
-      update: UserUpdateInput;
-    }
-  ) => UserPromise;
-  deleteUser: (where: UserWhereUniqueInput) => UserPromise;
-  deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  upVote: (args?: {}) => ProductPromise;
 
   /**
    * Subscriptions
@@ -126,6 +118,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  mutation: (
+    where?: MutationSubscriptionWhereInput
+  ) => MutationSubscriptionPayloadSubscription;
   product: (
     where?: ProductSubscriptionWhereInput
   ) => ProductSubscriptionPayloadSubscription;
@@ -141,6 +136,14 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type MutationOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type ProductOrderByInput =
   | "id_ASC"
@@ -174,9 +177,12 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type ProductWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export interface MutationWhereInput {
+  upVote?: ProductWhereInput;
+  AND?: MutationWhereInput[] | MutationWhereInput;
+  OR?: MutationWhereInput[] | MutationWhereInput;
+  NOT?: MutationWhereInput[] | MutationWhereInput;
+}
 
 export interface ProductWhereInput {
   id?: ID_Input;
@@ -311,74 +317,24 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
+export type ProductWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   email?: String;
 }>;
 
-export interface ProductCreateInput {
-  name: String;
-  description: String;
-  keyword: String;
-  upvote: Int;
-  link?: String;
-  author?: UserCreateOneInput;
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserCreateInput {
-  email?: String;
-  username: String;
-}
-
-export interface ProductUpdateInput {
-  name?: String;
-  description?: String;
-  keyword?: String;
-  upvote?: Int;
-  link?: String;
-  author?: UserUpdateOneInput;
-}
-
-export interface UserUpdateOneInput {
-  create?: UserCreateInput;
-  update?: UserUpdateDataInput;
-  upsert?: UserUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserUpdateDataInput {
-  email?: String;
-  username?: String;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface ProductUpdateManyMutationInput {
-  name?: String;
-  description?: String;
-  keyword?: String;
-  upvote?: Int;
-  link?: String;
-}
-
-export interface UserUpdateInput {
-  email?: String;
-  username?: String;
-}
-
-export interface UserUpdateManyMutationInput {
-  email?: String;
-  username?: String;
+export interface MutationSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MutationWhereInput;
+  AND?: MutationSubscriptionWhereInput[] | MutationSubscriptionWhereInput;
+  OR?: MutationSubscriptionWhereInput[] | MutationSubscriptionWhereInput;
+  NOT?: MutationSubscriptionWhereInput[] | MutationSubscriptionWhereInput;
 }
 
 export interface ProductSubscriptionWhereInput {
@@ -458,22 +414,22 @@ export interface UserSubscription
   username: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ProductConnection {}
+export interface MutationConnection {}
 
-export interface ProductConnectionPromise
-  extends Promise<ProductConnection>,
+export interface MutationConnectionPromise
+  extends Promise<MutationConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ProductEdge>>() => T;
-  aggregate: <T = AggregateProductPromise>() => T;
+  edges: <T = FragmentableArray<MutationEdge>>() => T;
+  aggregate: <T = AggregateMutationPromise>() => T;
 }
 
-export interface ProductConnectionSubscription
-  extends Promise<AsyncIterator<ProductConnection>>,
+export interface MutationConnectionSubscription
+  extends Promise<AsyncIterator<MutationConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ProductEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateProductSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MutationEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMutationSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -497,6 +453,58 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MutationEdge {
+  cursor: String;
+}
+
+export interface MutationEdgePromise
+  extends Promise<MutationEdge>,
+    Fragmentable {
+  node: <T = MutationPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MutationEdgeSubscription
+  extends Promise<AsyncIterator<MutationEdge>>,
+    Fragmentable {
+  node: <T = MutationSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateMutation {
+  count: Int;
+}
+
+export interface AggregateMutationPromise
+  extends Promise<AggregateMutation>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMutationSubscription
+  extends Promise<AsyncIterator<AggregateMutation>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProductConnection {}
+
+export interface ProductConnectionPromise
+  extends Promise<ProductConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ProductEdge>>() => T;
+  aggregate: <T = AggregateProductPromise>() => T;
+}
+
+export interface ProductConnectionSubscription
+  extends Promise<AsyncIterator<ProductConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ProductEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateProductSubscription>() => T;
 }
 
 export interface ProductEdge {
@@ -581,20 +589,25 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface MutationSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface MutationSubscriptionPayloadPromise
+  extends Promise<MutationSubscriptionPayload>,
     Fragmentable {
-  count: () => Promise<Long>;
+  mutation: () => Promise<MutationType>;
+  node: <T = MutationPromise>() => T;
+  updatedFields: () => Promise<String[]>;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
+export interface MutationSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MutationSubscriptionPayload>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MutationSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
 }
 
 export interface ProductSubscriptionPayload {
@@ -717,13 +730,15 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
-export type Long = string;
-
 /**
  * Model Metadata
  */
 
 export const models = [
+  {
+    name: "Mutation",
+    embedded: false
+  },
   {
     name: "Product",
     embedded: false

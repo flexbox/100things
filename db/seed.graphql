@@ -5,7 +5,6 @@ mutation {
       description: "Because"
       keyword: "swag"
       upvote: 1
-      link: null
     }
   ) {
     id
@@ -13,7 +12,6 @@ mutation {
     description
     keyword
     upvote
-    link
   }
   secondProduct: createProduct(
     data: {
@@ -21,7 +19,6 @@ mutation {
       description: "For working"
       keyword: "tech"
       upvote: 1
-      link: null
     }
   ) {
     id
@@ -29,6 +26,5 @@ mutation {
     description
     keyword
     upvote
-    link
   }
 }
