@@ -1,7 +1,7 @@
 {
-  "name": "my-app",
+  "name": "100things",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "apollo-boost": "^0.1.22",
     "graphql": "^14.0.2",
