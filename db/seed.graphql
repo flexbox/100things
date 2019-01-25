@@ -59,4 +59,20 @@ mutation {
     upvote
     link
   }
+  fiveProduct: createProduct(
+    data: {
+      name: "AirPods"
+      description: "AirPods will forever change the way you use headphones. Whenever you pull your AirPods out of the charging case, they instantly turn on and connect to your iPhone, Apple Watch, iPad, or Mac."
+      keyword: "tech"
+      upvote: 1
+      link: "https://www.apple.com/shop/product/MMEF2AM/A/airpods"
+    }
+  ) {
+    id
+    name
+    description
+    keyword
+    upvote
+    link
+  }
 }

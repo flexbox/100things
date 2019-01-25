@@ -1,7 +1,7 @@
-import React from 'react';
-import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
-import { Box, Heading, Text, Flex, Button } from 'rebass';
+import React from 'react'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
+import { Box, Heading, Text, Flex, Button } from 'rebass'
 
 const UPVOTE_PRODUCT = gql`
   mutation UpvoteProduct($vote: Int!, $id: ID!) {
@@ -10,25 +10,34 @@ const UPVOTE_PRODUCT = gql`
       name
     }
   }
-`;
+`
 
 const ProductItem = product => {
   return (
     <Box>
       <Mutation mutation={UPVOTE_PRODUCT}>
         {(upvoteProduct, { data }) => (
-          <Flex flexDirection="row" alignItems="center" p={3} bg="white" m={5}>
-            <Box p={3}>
+          <Flex
+            flexDirection="row"
+            alignItems="center"
+            flexWrap="wrap"
+            p={3}
+            bg="white"
+            mb={5}
+            ml={4}
+            mr={4}
+          >
+            <Box p={3} width={[1, 4 / 12]}>
               <Heading fontSize={[4, 6]} color="#E354C2" textAlign="center">
                 {product.upvote}
               </Heading>
               <form
                 onSubmit={e => {
-                  e.preventDefault();
+                  e.preventDefault()
                   upvoteProduct({
                     variables: { id: product.id, vote: product.upvote + 1 }
-                  });
-                  product.refetch();
+                  })
+                  product.refetch()
                 }}
               >
                 <Button type="submit" bg="#D7DDDE" color="#111111">
@@ -41,11 +50,11 @@ const ProductItem = product => {
               </form>
               <form
                 onSubmit={e => {
-                  e.preventDefault();
+                  e.preventDefault()
                   upvoteProduct({
                     variables: { id: product.id, vote: product.upvote - 1 }
-                  });
-                  product.refetch();
+                  })
+                  product.refetch()
                 }}
               >
                 <Button type="submit" bg="#D7DDDE" color="#111111">
@@ -57,7 +66,7 @@ const ProductItem = product => {
                 </Button>
               </form>
             </Box>
-            <Box p={3}>
+            <Box p={3} width={[1, 8 / 12]}>
               <Heading fontSize={[4, 6]}>{product.name}</Heading>
               <Text fontSize={[2, 4]}>{product.description}</Text>
             </Box>
@@ -65,7 +74,7 @@ const ProductItem = product => {
         )}
       </Mutation>
     </Box>
-  );
-};
+  )
+}
 
-export default ProductItem;
+export default ProductItem
